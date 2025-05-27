@@ -40,24 +40,48 @@ exports.addLead = async (req, res) => {
   }
 };
 
-// Fetch all leads
+
+
+// Fetch all leads with pagination
 exports.getLeads = async (req, res) => {
   try {
-    // Fetch all leads sorted by createdAt in descending order
-    const leads = await Lead.find().sort({ createdAt: -1 });
+    // Get page and limit from query parameters, with defaults
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
+    const skip = (page - 1) * limit;
 
-    // Success response
-    res.status(200).json({ 
-      success: true, 
-      message: 'Leads fetched successfully.', 
-      data: leads 
+    // Fetch total count of leads for pagination metadata
+    const totalLeads = await Lead.countDocuments();
+
+    // Fetch leads for the current page, sorted by createdAt in descending order
+    const leads = await Lead.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalLeads / limit);
+
+    // Success response with pagination metadata
+    res.status(200).json({
+      success: true,
+      message: 'Leads fetched successfully.',
+      data: {
+        leads,
+        pagination: {
+          currentPage: page,
+          totalPages,
+          totalLeads,
+          limit,
+        },
+      },
     });
   } catch (err) {
     // Handle errors
-    res.status(500).json({ 
-      success: false, 
-      message: 'An error occurred while fetching leads.', 
-      error: err.message 
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while fetching leads.',
+      error: err.message,
     });
   }
 };
