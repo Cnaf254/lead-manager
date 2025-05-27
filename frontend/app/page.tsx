@@ -48,7 +48,7 @@ function Page() {
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
           className={`px-4 py-2 text-sm font-medium text-white rounded-md ${
-            page === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-orange-600 hover:bg-blue-700"
+            page === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-gray-500 hover:bg-orange-300"
           }`}
         >
           Previous
@@ -62,7 +62,7 @@ function Page() {
           className={`px-4 py-2 text-sm font-medium text-white rounded-md ${
             page === leadsState.pagination.totalPages
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-orange-600 hover:bg-blue-700"
+              : "bg-gray-500 hover:bg-orange-300"
           }`}
         >
           Next
