@@ -1,16 +1,16 @@
 # Lead Manager
 
-Lead Manager is a web application for managing leads. It allows users to add and view. The application is built using Next.js, Redux Toolkit, and Tailwind CSS for the frontend, and Express.js for the backend.
+Lead Manager is a web-based tool for lead management, enabling users to add and view leads. It is developed with Next.js, Redux Toolkit, and Tailwind CSS for the frontend, and Express.js for the backend.
 
 ## Features
 
-- Add new leads with name, email, and status
-- View a list of all leads
+- Create new leads with their name, email, and status.
+- See a list of all leads.
 
 
 ## Technologies Used
 
-- Frontend: Next.js, Redux Toolkit, Tailwind CSS,react hook form
+- Frontend: Next.js, Redux Toolkit, Tailwind CSS, React Hook Form
 - Backend: Express.js, MongoDB
 - State Management: Redux Toolkit
 - API: RTK Query
@@ -26,7 +26,7 @@ Lead Manager is a web application for managing leads. It allows users to add and
 ### Clone the Repository
 
 ```sh
-git https://github.com/Gadisa21/lead-manager
+git https://github.com/Cnaf254/lead-manager
 cd lead-manager
 cd backend
 npm install
@@ -46,7 +46,7 @@ MONGO_URI=your_mongodb_uri
 
 ```sh
 cd backend
-npm node index.js
+node index.js
 cd ..
 cd frontend
 npm run dev
