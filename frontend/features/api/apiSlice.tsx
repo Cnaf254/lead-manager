@@ -1,12 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { LeadsResponse, LeadRequest } from '@/types/api';
+import { LeadsResponse, LeadRequest, CreateLeadResponse } from '@/types/api';
 
 export const leadsApi = createApi({
   reducerPath: 'leadsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3001/api' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://lead-manager-dogo.onrender.com/api',
+  }),
   tagTypes: ['Leads'],
   endpoints: (builder) => ({
-    createLead: builder.mutation<void, LeadRequest>({
+    createLead: builder.mutation<CreateLeadResponse, LeadRequest>({
       query: (body) => ({
         url: '/leads',
         method: 'POST',

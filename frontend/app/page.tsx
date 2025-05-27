@@ -22,7 +22,7 @@ function Page() {
     const response = await createLead(lead).unwrap();
 
     const createdLead = response.data; // This is the actual lead object from backend
-      
+
     dispatch(addLead(createdLead)); // Add to Redux state
     setPage(1); // Reset to first page
     setErrorMessage(null); // Clear any error

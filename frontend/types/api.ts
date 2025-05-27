@@ -1,12 +1,25 @@
-export interface Lead {
+export type Lead = {
   _id: string;
   name: string;
   email: string;
   status: string;
   createdAt: string;
-}
+  __v?: number;
+};
 
-export interface LeadsResponse {
+export type LeadRequest = {
+  name: string;
+  email: string;
+  status?: string;
+};
+
+export type CreateLeadResponse = {
+  success: boolean;
+  message: string;
+  data: Lead;
+};
+
+export type LeadsResponse = {
   success: boolean;
   message: string;
   data: {
@@ -18,10 +31,4 @@ export interface LeadsResponse {
       limit: number;
     };
   };
-}
-
-export interface LeadRequest {
-  name: string;
-  email: string;
-  status?: string;
-}
+};
