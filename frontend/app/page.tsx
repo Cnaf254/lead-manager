@@ -37,7 +37,7 @@ function Page() {
   if (isError) return <div>Error fetching leads</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-r from-blue-100 to-purple-100">
       <div className="container mx-auto gap-10 px-4 pt-10 flex justify-center flex-wrap">
         {leadsState.leads.map((lead, index) => (
           <LeadCard key={lead._id || index} lead={lead} />
@@ -48,7 +48,7 @@ function Page() {
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
           className={`px-4 py-2 text-sm font-medium text-white rounded-md ${
-            page === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+            page === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-orange-600 hover:bg-blue-700"
           }`}
         >
           Previous
@@ -62,7 +62,7 @@ function Page() {
           className={`px-4 py-2 text-sm font-medium text-white rounded-md ${
             page === leadsState.pagination.totalPages
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
+              : "bg-orange-600 hover:bg-blue-700"
           }`}
         >
           Next
