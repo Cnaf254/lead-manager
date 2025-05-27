@@ -18,20 +18,23 @@ function Page() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleAddLead = async (lead: { name: string; email: string; status?: string }) => {
-    try {
-      const response = await createLead(lead).unwrap();
-      dispatch(addLead({ ...lead, status: lead.status || "New", createdAt: new Date().toISOString() }));
-      setPage(1); // Reset to page 1 to show the newest lead
-      setErrorMessage(null); // Clear any previous error
-    } catch (error: any) {
-      // User-friendly error message
-      setErrorMessage(
-        error?.data?.message ||
-        error?.message ||
-        "Failed to add lead. Please try again."
-      );
-    }
-  };
+  try {
+    const response = await createLead(lead).unwrap();
+
+    const createdLead = response.data; // This is the actual lead object from backend
+      
+    dispatch(addLead(createdLead)); // Add to Redux state
+    setPage(1); // Reset to first page
+    setErrorMessage(null); // Clear any error
+  } catch (error: any) {
+    setErrorMessage(
+      error?.data?.message ||
+      error?.message ||
+      "Failed to add lead. Please try again."
+    );
+  }
+};
+
 
   useEffect(() => {
     if (data) {
