@@ -30,9 +30,9 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onSubmit }
       onClose();
       setServerError(null); 
     } catch (error: unknown) {
-        console.log("gadoo",error)
  // Type-checking the error before accessing properties
  if (error instanceof Error) {
+  
   setServerError(error.message);
 } else if (error && typeof error === "object" && "data" in error && error.data && typeof error.data === "object" && "message" in error.data) {
   setServerError((error as { data: { message: string } }).data.message);

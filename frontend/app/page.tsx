@@ -13,17 +13,23 @@ function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [createLead] = useCreateLeadMutation();
   const dispatch = useDispatch();
-  const { data, isError, isLoading } = useGetLeadsQuery({ page, limit: 9 });
+  const { data, isError, isLoading, error: fetchError } = useGetLeadsQuery({ page, limit: 9 });
   const leadsState = useSelector((state: RootState) => state.leads);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleAddLead = async (lead: { name: string; email: string; status?: string }) => {
     try {
       const response = await createLead(lead).unwrap();
       dispatch(addLead({ ...lead, status: lead.status || "New", createdAt: new Date().toISOString() }));
-      // Optionally refetch the current page to include the new lead
       setPage(1); // Reset to page 1 to show the newest lead
-    } catch (error: unknown) {
-      throw error;
+      setErrorMessage(null); // Clear any previous error
+    } catch (error: any) {
+      // User-friendly error message
+      setErrorMessage(
+        error?.data?.message ||
+        error?.message ||
+        "Failed to add lead. Please try again."
+      );
     }
   };
 
@@ -31,13 +37,36 @@ function Page() {
     if (data) {
       dispatch(setLeads({ leads: data.data.leads, pagination: data.data.pagination }));
     }
-  }, [data, dispatch]);
+    if (isError) {
+      // User-friendly fetch error
+      setErrorMessage(
+        (fetchError as any)?.data?.message ||
+        (fetchError as any)?.message ||
+        "Failed to fetch leads. Please try again later."
+      );
+    }
+  }, [data, dispatch, isError, fetchError]);
+
+  const handleCloseError = () => setErrorMessage(null);
 
   if (isLoading) return <Spinner />;
-  if (isError) return <div>Error fetching leads</div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-100 to-purple-100">
+      {errorMessage && (
+        <div className="container mx-auto mt-4 flex justify-center">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-xl w-full flex items-center justify-between" role="alert">
+            <span>{errorMessage}</span>
+            <button
+              onClick={handleCloseError}
+              className="ml-4 text-red-700 font-bold"
+              aria-label="Close"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
       <div className="container mx-auto gap-10 px-4 pt-10 flex justify-center flex-wrap">
         {leadsState.leads.map((lead, index) => (
           <LeadCard key={lead._id || index} lead={lead} />
@@ -71,7 +100,7 @@ function Page() {
       <div className="container mx-auto flex justify-center mt-4">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-black"
         >
           Add New Lead
         </button>
